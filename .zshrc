@@ -55,6 +55,12 @@ plugins=(git)
 
 export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 # export MANPATH="/usr/local/man:$MANPATH"
+export PATH="/usr/local/bin:$PATH"
+export PATH="/usr/local/bin:/usr/local/sbin:~/bin:$PATH"
+
+# for rbenv 
+eval "$(rbenv init -)"
+
 
 source $ZSH/oh-my-zsh.sh
 
