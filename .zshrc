@@ -61,6 +61,8 @@ export PATH="/usr/local/bin:/usr/local/sbin:~/bin:$PATH"
 # for rbenv 
 eval "$(rbenv init -)"
 
+# for pyenv
+eval "$(pyenv init -)"
 
 source $ZSH/oh-my-zsh.sh
 
@@ -88,3 +90,8 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+
+export NVM_DIR="/Users/arpit/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
