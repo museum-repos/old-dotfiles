@@ -1,3 +1,6 @@
+" ============================================================================
+" Vim-Plug it's Awesome {{{
+" ============================================================================
 
 " NeoBundle is good, Vim-plug is better.
 call plug#begin('~/.vim/plugged')
@@ -81,33 +84,36 @@ Plug 'Shougo/vimfiler.vim'
 Plug 'Shougo/unite.vim'
 Plug 'Shougo/vimproc.vim', { 'do': 'make' }
 Plug 'Shougo/neocomplete.vim'
+Plug 'Shougo/neomru.vim'
+Plug 'Shougo/unite-outline'
 
-"┌─────────────────────────┐
-"│ __  __     _            │
-"│ \ \/ /___ | | _____  __ │
-"│  \  // _ \| |/ _ \ \/ / │
-"│  /  \ (_) | | (_) >  <  │
-"│ /_/\_\___/|_|\___/_/\_\ │
-"└─────────────────────────┘
+" Faster Ctrl-p -> implementation of Unite
+Plug 'rstacruz/vim-fastunite'
+Plug 'tsukkee/unite-tag'
+
+" ┌─────────────────────────┐
+" │ __  __     _            │
+" │ \ \/ /___ | | _____  __ │
+" │  \  // _ \| |/ _ \ \/ / │
+" │  /  \ (_) | | (_) >  <  │
+" │ /_/\_\___/|_|\___/_/\_\ │
+" └─────────────────────────┘
 Plug 'xolox/vim-misc'
 Plug 'xolox/vim-notes'
 Plug 'xolox/vim-easytags'
 Plug 'xolox/vim-session'
 
 
-"┌────────────────────────────────┐
-"│   __  __       _   _           │
-"│  |  \/  | __ _| |_| |_ _ __    │
-"│  | |\/| |/ _` | __| __| '_ \   │
-"│  | |  | | (_| | |_| |_| | | |  │
-"│  |_|  |_|\__,_|\__|\__|_| |_|  │
-"└────────────────────────────────┘
+" ┌────────────────────────────────┐
+" │   __  __       _   _           │
+" │  |  \/  | __ _| |_| |_ _ __    │
+" │  | |\/| |/ _` | __| __| '_ \   │
+" │  | |  | | (_| | |_| |_| | | |  │
+" │  |_|  |_|\__,_|\__|\__|_| |_|  │
+" └────────────────────────────────┘
 Plug 'mattn/gist-vim'
 Plug 'mattn/emmet-vim'
 Plug 'mattn/sonictemplate-vim'
-
-
-
 
 
 "┌────────────────────────────────────────────────────────────────┐
@@ -147,7 +153,6 @@ Plug 'jaxbot/semantic-highlight.vim'
 "│    |_|   |_|\__,_|\__, |_|_| |_|___/    │
 "│                   |___/                 │
 "└─────────────────────────────────────────┘
-
 
 Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
 Plug 'thinca/vim-quickrun'
@@ -211,6 +216,7 @@ autocmd! User indentLine doautocmd indentLine Syntax
 " Add plugins to &runtimepath
 call plug#end()
 
+"}}}
 
 " ============================================================================
 " Settings for Sane Vim {{{
@@ -268,6 +274,59 @@ set incsearch
 " Make Y behave like other capitals
 nnoremap Y y$
 
+" disable sounds
+  set noerrorbells
+  set novisualbell
+  set t_vb=
+
+" This is essential and I learn it from Vim-Ruby 
+filetype on           " Enable filetype detection
+filetype indent on    " Enable filetype-specific indenting
+filetype plugin on    " Enable filetype-specific plugins
+
+
+
+" }}}
+
+" ============================================================================
+" Settings that makes vim Sane and Smart{{{
+" ============================================================================
+" 
+
+
+" screen line scroll : go to start of next line : much predictable
+nnoremap <silent> j gj
+nnoremap <silent> k gk
+
+
+
+" For smoothe scrolling : when navigating with j and k keys
+set lazyredraw
+
+
+" From: https://dockyard.com/blog/2013/09/26/vim-moving-lines-aint-hard
+" Move lines like sublime text
+" Normal mode
+nnoremap <C-j> :m .+1<CR>==
+nnoremap <C-k> :m .-2<CR>==
+
+" Insert mode
+inoremap <C-j> <ESC>:m .+1<CR>==gi
+inoremap <C-k> <ESC>:m .-2<CR>==gi
+
+" Visual mode
+vnoremap <C-j> :m '>+1<CR>gv=gv
+vnoremap <C-k> :m '<-2<CR>gv=gv
+
+
+
+
+
+"}}}
+
+
+
+
 " ============================================================================
 " Swap and Backup file solutions {{{
 " ============================================================================
@@ -280,7 +339,7 @@ set backupdir=/tmp//,.
 set directory=/tmp//,. 
 set undodir=/tmp//,.   
 
-
+"}}}
 
 
 " ============================================================================
@@ -291,6 +350,19 @@ nmap <C-s> <C-w>h
 nmap <C-j> <C-w>j
 nmap <C-k> <C-w>k
 nmap <C-l> <C-w>l
+
+"}}}
+
+
+" ============================================================================
+" Split With Predictability {{{
+" ============================================================================
+" 
+" Split hsplit->below and :vsplit to the right
+set splitbelow 
+set splitright
+
+"}}}
 
 
 " ============================================================================
@@ -331,42 +403,60 @@ set wildignore+=*.png,*.jpg,*.gif
 set wildignore+=*.so,*.swp,*.zip,*/.Trash/**,*.pdf,*.dmg,*/Library/**,*/.rbenv/**
 set wildignore+=*/.nx/**,*.app
 
-
+"}}}
 
 " ============================================================================
 " Unite {{{
 " ============================================================================
 "                     
-" Unite :: Ctrl-p {{{
-let g:unite_enable_start_insert = 1
-let g:unite_split_rule = "botright"
-let g:unite_force_overwrite_statusline = 0
-let g:unite_winheight = 10
+" Unite :: Ctrl-p {{{ TAKE:1
+"let g:unite_enable_start_insert = 1
+"let g:unite_split_rule = "botright"
+"let g:unite_force_overwrite_statusline = 0
+"let g:unite_winheight = 10
 
-call unite#custom_source('file_rec,file_rec/async,file_mru,file,buffer,grep,ag',
-      \ 'ignore_pattern', join([
-      \ '\.git/',
-      \ ], '\|'))
+"call unite#custom_source('file_rec,file_rec/async,file_mru,file,buffer,grep,ag',
+"      \ 'ignore_pattern', join([
+"      \ '\.git/',
+"      \ ], '\|'))
 
-call unite#filters#matcher_default#use(['matcher_fuzzy'])
-call unite#filters#sorter_default#use(['sorter_rank'])
+"call unite#filters#matcher_default#use(['matcher_fuzzy'])
+"call unite#filters#sorter_default#use(['sorter_rank'])
 
-nnoremap <C-P> :<C-u>Unite  -buffer-name=files   -start-insert buffer file_rec/async:!<cr>
+"nnoremap <C-P> :<C-u>Unite  -buffer-name=files   -start-insert buffer file_rec/async:!<cr>
 
-autocmd FileType unite call s:unite_settings()
+"autocmd FileType unite call s:unite_settings()
 
-function! s:unite_settings()
-  let b:SuperTabDisabled=1
-  imap <buffer> <C-j>   <Plug>(unite_select_next_line)
-  imap <buffer> <C-k>   <Plug>(unite_select_previous_line)
-  imap <silent><buffer><expr> <C-x> unite#do_action('split')
-  imap <silent><buffer><expr> <C-v> unite#do_action('vsplit')
-  imap <silent><buffer><expr> <C-t> unite#do_action('tabopen')
+"function! s:unite_settings()
+"  let b:SuperTabDisabled=1
+"  imap <buffer> <C-j>   <Plug>(unite_select_next_line)
+"  imap <buffer> <C-k>   <Plug>(unite_select_previous_line)
+"  imap <silent><buffer><expr> <C-x> unite#do_action('split')
+"  imap <silent><buffer><expr> <C-v> unite#do_action('vsplit')
+"  imap <silent><buffer><expr> <C-t> unite#do_action('tabopen')
 
-  nmap <buffer> <ESC> <Plug>(unite_exit)
-endfunction
+"  nmap <buffer> <ESC> <Plug>(unite_exit)
+"endfunction
+
+"{{{TAKE:2 withrstacruz/vim-fastunite }}}
+map <C-p> [unite]p
+
+
+
+
+
+
+
+
+
+
 
 " Unite Ctrl-p}}}
+
+
+
+
+
 
 
 " ============================================================================
@@ -377,34 +467,27 @@ endfunction
 let g:vimshell_right_prompt='getcwd()'
 nnoremap <leader>pry :VimShellInteractive pry<cr>
 
+"}}}
 
 
 
+" ============================================================================
+" Vim Monster featuring NeoSnippet {{{
+" ============================================================================
+" 
 
+" vim-monster for ruby autocomplete
+" Use neocomplete.vim
+"let g:neocomplete#force_omni_input_patterns = {
+"            \   'ruby' : '[^. *\t]\.\|\h\w*::',
+"            \}
 
+"}}}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+" ============================================================================
+" Remap Arrow Keys for Buffer and Tab Navigation {{{
+" ============================================================================
+" 
 " remap arrow keys
 nnoremap <left> :bprev<CR>
 nnoremap <right> :bnext<CR>
@@ -412,38 +495,102 @@ nnoremap <up> :tabnext<CR>
 nnoremap <down> :tabprev<CR>
 
 
-" screen line scroll : go to start of next line : much predictable
-nnoremap <silent> j gj
-nnoremap <silent> k gk
+"}}}
 
+
+" ============================================================================
+" Ack and Ag settings ::  {{{
+" ============================================================================
+" 
 
 if executable('ack')
 	set grepprg=ack\ --nogroup\ --column\ --smart-case\ --nocolor\ --follow\ $*
 	set grepformat=%f:%l:%c:%m
 endif
+
 if executable('ag')
 	set grepprg=ag\ --nogroup\ --column\ --smart-case\ --nocolor\ --follow
 	set grepformat=%f:%l:%c:%m
 endif
 
-" For smoothe scrolling : when navigating with j and k keys
-set lazyredraw
+
+"}}}
+
+
+
+" ┌──────────────────────────────────────────────────────────────────────┐
+" │        ____  _             _              ____          _            │
+" │       |  _ \| |_   _  __ _(_)_ __  ___   / ___|___   __| | ___       │
+" │       | |_) | | | | |/ _` | | '_ \/ __| | |   / _ \ / _` |/ _ \      │
+" │       |  __/| | |_| | (_| | | | | \__ \ | |__| (_) | (_| |  __/      │
+" │       |_|   |_|\__,_|\__, |_|_| |_|___/  \____\___/ \__,_|\___|      │
+" │                      |___/                                           │
+" │                    _   __  __                   _                    │
+" │     __ _ _ __   __| | |  \/  | __ _ _ __  _ __ (_)_ __   __ _ ___    │
+" │    / _` | '_ \ / _` | | |\/| |/ _` | '_ \| '_ \| | '_ \ / _` / __|   │
+" │   | (_| | | | | (_| | | |  | | (_| | |_) | |_) | | | | | (_| \__ \   │
+" │    \__,_|_| |_|\__,_| |_|  |_|\__,_| .__/| .__/|_|_| |_|\__, |___/   │
+" │                                    |_|   |_|            |___/        │
+" │                                                                      │
+" └──────────────────────────────────────────────────────────────────────┘
+" 
+
+
+" ============================================================================
+" Neocomplete {{{
+" ============================================================================
+" 
+
+"}}}
 
 
 
 
 
-" From: https://dockyard.com/blog/2013/09/26/vim-moving-lines-aint-hard
-" Move lines like sublime text
-" Normal mode
-nnoremap <C-j> :m .+1<CR>==
-nnoremap <C-k> :m .-2<CR>==
 
-" Insert mode
-inoremap <C-j> <ESC>:m .+1<CR>==gi
-inoremap <C-k> <ESC>:m .-2<CR>==gi
+" ============================================================================
+" Syntastic {{{
+" ============================================================================
+" 
+let g:syntastic_error_symbol = '✗'
+let g:syntastic_style_error_symbol = '✠'
+let g:syntastic_warning_symbol = '∆'
+let g:syntastic_style_warning_symbol = '≈'
 
-" Visual mode
-vnoremap <C-j> :m '>+1<CR>gv=gv
-vnoremap <C-k> :m '<-2<CR>gv=gv
+let g:syntastic_ruby_checkers          = ['mri', 'rubocop', 'reek']
+
+"}}}
+
+
+" ============================================================================
+" VimProc {{{
+" ============================================================================
+" 
+
+nnoremap <leader>pry :VimShellInteractive pry<cr>
+
+"}}}
+
+
+
+" ============================================================================
+" Vimfiler {{{
+" ============================================================================
+" 
+let g:vimfiler_as_default_explorer = 1
+nnoremap <leader>n :VimFilerExplorer<CR>
+let g:vimfiler_enable_auto_cd = 1
+
+
+"}}}
+
+
+
+
+
+
+
+
+
+
 
