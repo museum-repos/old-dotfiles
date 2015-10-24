@@ -136,6 +136,11 @@ nvm use v4.2.1
 #
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
+
+# fzf-extras this package has so many functions 
+# Github Repo: https://github.com/atweiden/fzf-extras
+[[ -e ~/.fzf-extras/fzf-extras.zsh ]] && . ~/.fzf-extras/fzf-extras.zsh
+
 #}}}
 
 # ============================================================================
