@@ -49,7 +49,7 @@ ZSH_THEME="robbyrussell"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git)
+plugins=(git rails ruby brew bundler common-aliases dirhistory gem git-extras httpie jira node npm nyan osx sublime sudo svn svn-fast-info wd )
 
 # User configuration
 
@@ -95,3 +95,29 @@ export NVM_DIR="/Users/arpit/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+
+# ============================================================================
+# {{{ 
+# ============================================================================
+
+
+
+
+# }}}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

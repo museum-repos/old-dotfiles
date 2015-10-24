@@ -80,6 +80,7 @@ Plug 'Shougo/unite.vim'
 Plug 'Shougo/vimfiler.vim'
 Plug 'Shougo/unite.vim'
 Plug 'Shougo/vimproc.vim', { 'do': 'make' }
+Plug 'Shougo/neocomplete.vim'
 
 "┌─────────────────────────┐
 "│ __  __     _            │
@@ -88,6 +89,7 @@ Plug 'Shougo/vimproc.vim', { 'do': 'make' }
 "│  /  \ (_) | | (_) >  <  │
 "│ /_/\_\___/|_|\___/_/\_\ │
 "└─────────────────────────┘
+Plug 'xolox/vim-misc'
 Plug 'xolox/vim-notes'
 Plug 'xolox/vim-easytags'
 Plug 'xolox/vim-session'
@@ -200,19 +202,7 @@ Plug 'jiangmiao/auto-pairs'
 Plug 'hail2u/vim-css3-syntax'
 Plug 'ap/vim-css-color'
 Plug 'itchyny/lightline.vim'
-
-" My plugins - :)
-
- 
-" Plug 'bling/vim-airline'
-" Plug 'bling/vim-bufferline'
-
-
-
-
-
-
-
+Plug 'janko-m/vim-test'
 
 " Browsing
 Plug 'Yggdroot/indentLine', { 'on': 'IndentLinesEnable' }
@@ -222,71 +212,238 @@ autocmd! User indentLine doautocmd indentLine Syntax
 call plug#end()
 
 
+" ============================================================================
+" Settings for Sane Vim {{{
+" ============================================================================
+set nocompatible
+set dictionary-=/usr/share/dict/words dictionary+=/usr/share/dict/words
+
+" Make backspace behave normally.
+set backspace=indent,eol,start 
+
+
+" Always show the statusline
+set laststatus=2
+
+" Show line number : relativenumber will make ruby files slow hence not set
+set number
+
+" Set to auto read when a file is changed from the outside
+set autoread
+
+" allow buffer switching without saving
+set hidden
+
+"Show (partial) command in the status line
+set showcmd
+
+
+" Syntax 
+syntax enable
+
+" How many lines to scroll at a time, make scrolling appears faster
+set scrolljump=3
+
+" Case insensitive search
+" In case of uppercase letters case sensitive search (smartcase)
+set ignorecase
+set smartcase
+
+
+" Tab related settings
+" Tabs are spaces(expandtab)
+set expandtab
+set smarttab
+
+
+" Use OS-X Keyboard
+set clipboard=unnamed
+
+" Search related settings
+set hlsearch
+set incsearch
+
+
+
+" Make Y behave like other capitals
+nnoremap Y y$
+
+" ============================================================================
+" Swap and Backup file solutions {{{
+" ============================================================================
+" Don't generate swap and backup files
+set noswapfile
+set nobackup
+
+" Annoying temporary files
+set backupdir=/tmp//,. 
+set directory=/tmp//,. 
+set undodir=/tmp//,.   
 
 
 
 
 " ============================================================================
-" BASIC SETTINGS {{{
+" EASIER WINDOW NAVIGATION {{{
 " ============================================================================
-
-let mapleader      = ' '
-let maplocalleader = ' '
-
-set nu
-set autoindent
-set smartindent
+" I like using s key for navigation instead of h key. It's in sync with cvimrc
+nmap <C-s> <C-w>h 
+nmap <C-j> <C-w>j
+nmap <C-k> <C-w>k
+nmap <C-l> <C-w>l
 
 
+" ============================================================================
+" LeaderKey Related Settings {{{
+" ============================================================================
+"
+let g:mapleader = "\<Space>"
+noremap <Leader>w :w<CR>
+noremap <leader>x :q<CR>
+noremap <leader>xx :q!<CR>
 
+"noremap <silent><leader>vv :tabnew ~/.vimrc<CR>
 
+noremap <silent> <leader>vv :e $MYVIMRC<CR>
+noremap <silent> <leader>sv :so $MYVIMRC<CR>
 
-
-
-
-
-
-
-" Ultisnips Settings
-
-
-" Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
-let g:UltiSnipsExpandTrigger="<tab>"
-let g:UltiSnipsJumpForwardTrigger="<c-j>"
-let g:UltiSnipsJumpBackwardTrigger="<c-k>"
-
-" If you want :UltiSnipsEdit to split your window.
-let g:UltiSnipsEditSplit="vertical"
+" Open horizontal and vertical splits:
+" -- and \\ feels more natural than - and \ when opening splits
+nmap <leader>-- <C-w>s
+nmap <leader>\\ <C-w>v
 
 
 
+" ============================================================================
+" Turn on tab completion for filenames, helptops, options et cetera {{{
+" ============================================================================
+"set wildmode=list:longest,full
+set wildmode=full
+set wildmenu
+set wildignore=*.o,*.obj,*~ "stuff to ignore when tab completing
+set wildignore+=*DS_Store*
+set wildignore+=vendor/rails/**
+set wildignore+=vendor/cache/**
+set wildignore+=*.gem
+set wildignore+=log/**
+set wildignore+=tmp/**
+set wildignore+=*.png,*.jpg,*.gif
+set wildignore+=*.so,*.swp,*.zip,*/.Trash/**,*.pdf,*.dmg,*/Library/**,*/.rbenv/**
+set wildignore+=*/.nx/**,*.app
 
 
 
+" ============================================================================
+" Unite {{{
+" ============================================================================
+"                     
+" Unite :: Ctrl-p {{{
+let g:unite_enable_start_insert = 1
+let g:unite_split_rule = "botright"
+let g:unite_force_overwrite_statusline = 0
+let g:unite_winheight = 10
 
+call unite#custom_source('file_rec,file_rec/async,file_mru,file,buffer,grep,ag',
+      \ 'ignore_pattern', join([
+      \ '\.git/',
+      \ ], '\|'))
 
+call unite#filters#matcher_default#use(['matcher_fuzzy'])
+call unite#filters#sorter_default#use(['sorter_rank'])
 
+nnoremap <C-P> :<C-u>Unite  -buffer-name=files   -start-insert buffer file_rec/async:!<cr>
 
+autocmd FileType unite call s:unite_settings()
 
+function! s:unite_settings()
+  let b:SuperTabDisabled=1
+  imap <buffer> <C-j>   <Plug>(unite_select_next_line)
+  imap <buffer> <C-k>   <Plug>(unite_select_previous_line)
+  imap <silent><buffer><expr> <C-x> unite#do_action('split')
+  imap <silent><buffer><expr> <C-v> unite#do_action('vsplit')
+  imap <silent><buffer><expr> <C-t> unite#do_action('tabopen')
 
-
-
-
-
-
-
-
-" ----------------------------------------------------------------------------
-" Help in new tabs
-" ----------------------------------------------------------------------------
-function! s:helptab()
-  if &buftype == 'help'
-    wincmd T
-    nnoremap <buffer> q :q<cr>
-  endif
+  nmap <buffer> <ESC> <Plug>(unite_exit)
 endfunction
 
-augroup vimrc_help
-  autocmd!
-  autocmd BufEnter *.txt call s:helptab()
-augroup END
+" Unite Ctrl-p}}}
+
+
+" ============================================================================
+" VimShell {{{
+" ============================================================================
+" 
+" Open pry in vim 
+let g:vimshell_right_prompt='getcwd()'
+nnoremap <leader>pry :VimShellInteractive pry<cr>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+" remap arrow keys
+nnoremap <left> :bprev<CR>
+nnoremap <right> :bnext<CR>
+nnoremap <up> :tabnext<CR>
+nnoremap <down> :tabprev<CR>
+
+
+" screen line scroll : go to start of next line : much predictable
+nnoremap <silent> j gj
+nnoremap <silent> k gk
+
+
+if executable('ack')
+	set grepprg=ack\ --nogroup\ --column\ --smart-case\ --nocolor\ --follow\ $*
+	set grepformat=%f:%l:%c:%m
+endif
+if executable('ag')
+	set grepprg=ag\ --nogroup\ --column\ --smart-case\ --nocolor\ --follow
+	set grepformat=%f:%l:%c:%m
+endif
+
+" For smoothe scrolling : when navigating with j and k keys
+set lazyredraw
+
+
+
+
+
+" From: https://dockyard.com/blog/2013/09/26/vim-moving-lines-aint-hard
+" Move lines like sublime text
+" Normal mode
+nnoremap <C-j> :m .+1<CR>==
+nnoremap <C-k> :m .-2<CR>==
+
+" Insert mode
+inoremap <C-j> <ESC>:m .+1<CR>==gi
+inoremap <C-k> <ESC>:m .-2<CR>==gi
+
+" Visual mode
+vnoremap <C-j> :m '>+1<CR>gv=gv
+vnoremap <C-k> :m '<-2<CR>gv=gv
+
