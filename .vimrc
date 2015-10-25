@@ -269,6 +269,16 @@ set smartcase
 set expandtab
 set smarttab
 
+" size of a hard tabstop
+set tabstop=2
+
+" size of an "indent"
+set shiftwidth=2
+
+" a combination of spaces and tabs are used to simulate tab stops at a width
+" other than the (hard)tabstop
+set softtabstop=2
+
 
 " Use OS-X Keyboard
 set clipboard=unnamed
@@ -294,6 +304,8 @@ filetype plugin on    " Enable filetype-specific plugins
 
 
 
+
+
 " }}}
 
 " ============================================================================
@@ -309,6 +321,10 @@ autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
 autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
 autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete
 autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+
+
+"remove whitespace on writing
+autocmd FileType * autocmd BufWritePre * :%s/\s\+$//e
 
 
 
@@ -348,12 +364,72 @@ vnoremap <C-k> :m '<-2<CR>gv=gv
 vnoremap < <gv
 vnoremap > >gv
 
+" COLOR : Gary Berndhart
+:set t_Co=256 " 256 colors
+:set background=light
+:colorscheme solarized
 
 
+" ============================================================================
+" Some cool things : Gary Berndhart {{{
+" ============================================================================
+" 
 
+" Insert a hash rocket with <c-l>
+imap <c-l> <space>=><space>
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" PROMOTE VARIABLE TO RSPEC LET
+
+" so if a = "hello" then with this command(or leader-p)
+" it becomes let(:a) { "hello" } #super_cool
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+function! PromoteToLet()
+  :normal! dd
+  " :exec '?^\s*it\>'
+  :normal! P
+  :.s/\(\w\+\) = \(.*\)$/let(:\1) { \2 }/
+  :normal ==
+endfunction
+:command! PromoteToLet :call PromoteToLet()
+:map <leader>p :PromoteToLet<cr>
+
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" MULTIPURPOSE TAB KEY
+" Indent if we're at the beginning of a line. Else, do completion.
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+function! InsertTabWrapper()
+    let col = col('.') - 1
+    if !col || getline('.')[col - 1] !~ '\k'
+        return "\<tab>"
+    else
+        return "\<c-p>"
+    endif
+endfunction
+inoremap <expr> <tab> InsertTabWrapper()
+inoremap <s-tab> <c-n>
+
+"}}}
+
+
+" Reload in chrome
+map <leader>l :w\|:silent !reload-chrome<cr>
 
 
 "}}}
+
+
+
+" ============================================================================
+" AutoCommands {{{
+" ============================================================================
+" 
+
+"autocmd FileType ruby,haml,eruby,yaml,html,javascript,sass,cucumber set ai sw=2 sts=2 et
+
+"}}}
+
 
 
 
@@ -421,7 +497,7 @@ nmap <leader>\\ <C-w>v
 " Turn on tab completion for filenames, helptops, options et cetera {{{
 " ============================================================================
 "set wildmode=list:longest,full
-set wildmode=longest:full
+set wildmode=longest,list,full
 set wildignore=*.o,*.obj,*~ "stuff to ignore when tab completing
 set wildignore+=*DS_Store*
 set wildignore+=vendor/rails/**
@@ -502,7 +578,7 @@ nnoremap <leader>pry :VimShellInteractive pry<cr>
 
 
 " ============================================================================
-" Vim Monster featuring NeoSnippet {{{
+" Vim Monster featuring NeoComplete {{{
 " ============================================================================
 " 
 let g:monster#completion#rcodetools#backend = "async_rct_complete"
@@ -696,9 +772,10 @@ let g:vimfiler_enable_auto_cd = 1
 " ============================================================================
 " 
 
+" Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
 let g:UltiSnipsExpandTrigger="<tab>"
-let g:UltiSnipsJumpForwardTrigger="<c-j>"
-let g:UltiSnipsJumpBackwardTrigger="<c-k>"
+let g:UltiSnipsJumpForwardTrigger="<c-b>"
+let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 
 " If you want :UltiSnipsEdit to split your window.
 let g:UltiSnipsEditSplit="vertical"
