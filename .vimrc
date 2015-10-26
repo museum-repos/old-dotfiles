@@ -210,7 +210,11 @@ Plug 'itchyny/lightline.vim'
 Plug 'janko-m/vim-test'
 " Plug 'rstacruz/vim-hyperstyle'
 Plug 'AndrewRadev/splitjoin.vim'
+Plug 'AndrewRadev/switch.vim'
 Plug 't9md/vim-ruby-xmpfilter'
+Plug 'zhaocai/GoldenView.Vim'
+"Plug 'wesQ3/vim-windowswap'
+Plug 'rking/ag.vim'
 
 
 " Browsing
@@ -866,7 +870,7 @@ let g:easytags_updatetime_min=40000 "Measure is in milli-seconds
 
 
 " ============================================================================
-" Seeing is Believing {{{
+" Xmpfilter ::  Seeing is Believing {{{
 " ============================================================================
 " 
 
@@ -879,7 +883,41 @@ nmap <buffer> <F3> <Plug>(xmpfilter-mark)
 xmap <buffer> <F3> <Plug>(xmpfilter-mark)
 imap <buffer> <F3> <Plug>(xmpfilter-mark)
 
-nmap <F7> :%s/\s\+# =>.*$//g<CR>
-xmap <F7> :s/\s\+# =>.*$//g<CR>
+" This is from Seeing-is-Believing's Vim-Plugin
+nmap <F7> :%s/\s\+# =>.*$\\|^#\s[>!\~]>\(\s.*\)\?$//g \| :%s#\($\n\s*\)\+\%$##<CR>
+xmap <F7> :s/\s\+# =>.*$\\|^#\s[>!\~]>\(\s.*\)\?$//g \| :'<,'>s#\($\n\s*\)\+\%$##<CR>
+"}}}
+
+
+
+" ============================================================================
+" Vim-Sneak {{{
+" ============================================================================
+" 
+" Case sensitivity is determined by 'ignorecase' and 'smartcase'.
+let g:sneak#use_ic_scs = 1
 
 "}}}
+
+" ============================================================================
+" Vim-gtfo {{{
+" ============================================================================
+" 
+
+" Go to terminal -> opens file with iterm instead of mac-terminal
+let g:gtfo#terminals = { 'mac' : 'iterm' }
+
+"}}}
+
+
+" ============================================================================
+" Ag.vim {{{
+" ============================================================================
+" 
+" A mapping that describes where ag will be run. Default is the current working
+" directory. Specifying 'r' as the argument will tell it to run from the project
+" rootdirectory. For now any other mapping will result to the default.
+ let g:ag_working_path_mode='r'
+
+"}}}
+

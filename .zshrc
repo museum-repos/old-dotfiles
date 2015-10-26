@@ -71,7 +71,7 @@ export UPDATE_ZSH_DAYS=60
 # ENABLE_CORRECTION="true"
 
 # Uncomment the following line to display red dots whilst waiting for completion.
-COMPLETION_WAITING_DOTS="true"
+#COMPLETION_WAITING_DOTS="true"
 
 
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
@@ -214,3 +214,17 @@ alias vim="mvim -v"
 clear
 
 #}}}
+
+
+# ============================================================================
+# {{{ ZPM - Vim-Plug like plugin for zsh
+# ============================================================================
+
+if [[ ! -f ~/.zpm/zpm.zsh ]]; then
+    git clone --recursive https://github.com/horosgrisa/zpm ~/.zpm
+fi
+
+#}}}
+
+
+fpath+=("/usr/local/share/zsh/site-functions")
