@@ -1,0 +1,27 @@
+# Copied from : https://github.com/justinmk/config
+
+--exclude=.git
+--exclude=.svn
+--exclude=.hg
+--exclude=\*.cache.html
+--exclude=\*.nocache.js
+--exclude=\*.min.\*
+--exclude=\*.map
+--exclude=\*.swp
+--exclude=\*.bak
+--exclude=\*.pyc
+--exclude=\*.class
+--exclude=\*.sln
+--exclude=\*.Master
+--exclude=\*.csproj
+--exclude=\*.csproj.user
+--exclude=\*.cache
+--exclude=\*.dll
+--exclude=\*.pdb
+--exclude=tags
+--exclude=cscope.\*
+--exclude=\*.tar.\*
+
+--langmap=javascript:.js
+# improve ctags handling of JavaScript by adding a definition for object literals
+--regex-javascript=/([A-Za-z0-9._$]+)[ \t]*[:=][ \t]*\{/\1/o,object/
