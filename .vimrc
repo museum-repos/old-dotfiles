@@ -9,10 +9,10 @@ call plug#begin('~/.vim/plugged')
 
 " Make sure you use single quotes
 " Group dependencies, vim-snippets depends on ultisnips
-" On-demand loading => 1. on -> load 'on', 
+" On-demand loading => 1. on -> load 'on',
 " 					   2. for -> for ruby/python/js... types of files
-"					   3. 
-" 
+"					   3.
+"
 " ┌─────────────────────────────────────────┐
 " │                                         │
 " │        _                                │
@@ -210,6 +210,7 @@ Plug 'itchyny/lightline.vim'
 Plug 'janko-m/vim-test'
 " Plug 'rstacruz/vim-hyperstyle'
 Plug 'AndrewRadev/splitjoin.vim'
+Plug 't9md/vim-ruby-xmpfilter'
 
 
 " Browsing
@@ -228,7 +229,7 @@ set nocompatible
 set dictionary-=/usr/share/dict/words dictionary+=/usr/share/dict/words
 
 " Make backspace behave normally.
-set backspace=indent,eol,start 
+set backspace=indent,eol,start
 
 
 " Always show the statusline
@@ -252,7 +253,7 @@ set hidden
 set showcmd
 
 
-" Syntax 
+" Syntax
 syntax enable
 
 " How many lines to scroll at a time, make scrolling appears faster
@@ -264,10 +265,6 @@ set ignorecase
 set smartcase
 
 
-" Tab related settings
-" Tabs are spaces(expandtab)
-set expandtab
-set smarttab
 
 " size of a hard tabstop
 set tabstop=2
@@ -278,6 +275,19 @@ set shiftwidth=2
 " a combination of spaces and tabs are used to simulate tab stops at a width
 " other than the (hard)tabstop
 set softtabstop=2
+
+" Ruby related settings
+" To remove colorcolumn use :set colorcolumn= command.
+autocmd filetype ruby setlocal shiftwidth=2 tabstop=2
+autocmd filetype ruby setlocal colorcolumn=80
+
+
+" Tab related settings
+" Tabs are spaces(expandtab)
+" Tip: to convet tabs into spaces user :retab
+set expandtab
+set smarttab
+
 
 
 " Use OS-X Keyboard
@@ -297,7 +307,7 @@ nnoremap Y y$
   set novisualbell
   set t_vb=
 
-" This is essential and I learn it from Vim-Ruby 
+" This is essential and I learn it from Vim-Ruby
 filetype on           " Enable filetype detection
 filetype indent on    " Enable filetype-specific indenting
 filetype plugin on    " Enable filetype-specific plugins
@@ -311,7 +321,7 @@ filetype plugin on    " Enable filetype-specific plugins
 " ============================================================================
 " Settings that makes vim Sane and Smart{{{
 " ============================================================================
-" 
+"
 set omnifunc=syntaxcomplete#Complete
 
 " Enable omni completion.
@@ -373,10 +383,11 @@ vnoremap > >gv
 " ============================================================================
 " Some cool things : Gary Berndhart {{{
 " ============================================================================
-" 
+"
 
 " Insert a hash rocket with <c-l>
-imap <c-l> <space>=><space>
+imap <c-l> \<Space>=>\<Space>
+
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " PROMOTE VARIABLE TO RSPEC LET
@@ -410,11 +421,33 @@ endfunction
 inoremap <expr> <tab> InsertTabWrapper()
 inoremap <s-tab> <c-n>
 
+
+
+" This will make sure all splits will be at least 5 lines 
+" (episode:das-0013-file-navigation-in-vim),
+" and the current window will be 30 lines. 
+" As you navigate through the windows, the current one will become 30 lines.
+" http://flaviusim.com/blog/resizing-vim-window-splits-like-a-boss/
+set winheight=30
+set winminheight=5
+
+
+
+
+
+" A key-binding for switch between latest 2 files (normally it's <C-^>)
+" Gary Berndhart maps it with ,, which means <leader><leader> for him.
+nnoremap <leader>f <C-^>
+
+
+
+
+
 "}}}
 
 
-" Reload in chrome
-map <leader>l :w\|:silent !reload-chrome<cr>
+" Reload in chrome :: will use it when needed
+" map <leader>l :w\|:silent !reload-chrome<cr>
 
 
 "}}}
@@ -424,7 +457,7 @@ map <leader>l :w\|:silent !reload-chrome<cr>
 " ============================================================================
 " AutoCommands {{{
 " ============================================================================
-" 
+"
 
 "autocmd FileType ruby,haml,eruby,yaml,html,javascript,sass,cucumber set ai sw=2 sts=2 et
 
@@ -442,9 +475,9 @@ set noswapfile
 set nobackup
 
 " Annoying temporary files
-set backupdir=/tmp//,. 
-set directory=/tmp//,. 
-set undodir=/tmp//,.   
+set backupdir=/tmp//,.
+set directory=/tmp//,.
+set undodir=/tmp//,.
 
 "}}}
 
@@ -452,8 +485,8 @@ set undodir=/tmp//,.
 " ============================================================================
 " EASIER WINDOW NAVIGATION {{{
 " ============================================================================
-" I like using s key for navigation instead of h key. It's in sync with cvimrc
-nmap <C-s> <C-w>h 
+" C-hjkl for window/split navigation
+nmap <C-h> <C-w>h
 nmap <C-j> <C-w>j
 nmap <C-k> <C-w>k
 nmap <C-l> <C-w>l
@@ -462,11 +495,28 @@ nmap <C-l> <C-w>l
 
 
 " ============================================================================
-" Split With Predictability {{{
+" Vim-Test : Janko-m {{{
 " ============================================================================
 " 
+
+nmap <silent> <leader>t :TestNearest<CR>
+nmap <silent> <leader>T :TestFile<CR>
+nmap <silent> <leader>a :TestSuite<CR>
+nmap <silent> <leader>l :TestLast<CR>
+nmap <silent> <leader>g :TestVisit<CR>
+
+" make test commands execute using dispatch.vim
+let test#strategy = "dispatch"
+
+"}}}
+
+
+" ============================================================================
+" Split With Predictability {{{
+" ============================================================================
+"
 " Split hsplit->below and :vsplit to the right
-set splitbelow 
+set splitbelow
 set splitright
 
 "}}}
@@ -480,6 +530,7 @@ let g:mapleader = "\<Space>"
 noremap <Leader>w :w<CR>
 noremap <leader>x :q<CR>
 noremap <leader>xx :q!<CR>
+nnoremap <leader>l \<Space>=>\<Space>
 
 "noremap <silent><leader>vv :tabnew ~/.vimrc<CR>
 
@@ -514,7 +565,7 @@ set wildignore+=*/.nx/**,*.app
 " ============================================================================
 " Unite {{{
 " ============================================================================
-"                     
+"
 " Unite :: Ctrl-p {{{ TAKE:1
 "let g:unite_enable_start_insert = 1
 "let g:unite_split_rule = "botright"
@@ -568,8 +619,8 @@ map <C-p> [unite]p
 " ============================================================================
 " VimShell {{{
 " ============================================================================
-" 
-" Open pry in vim 
+"
+" Open pry in vim
 let g:vimshell_right_prompt='getcwd()'
 nnoremap <leader>pry :VimShellInteractive pry<cr>
 
@@ -580,7 +631,7 @@ nnoremap <leader>pry :VimShellInteractive pry<cr>
 " ============================================================================
 " Vim Monster featuring NeoComplete {{{
 " ============================================================================
-" 
+"
 let g:monster#completion#rcodetools#backend = "async_rct_complete"
 
 " vim-monster for ruby autocomplete
@@ -594,7 +645,7 @@ let g:neocomplete#force_omni_input_patterns = {
 " ============================================================================
 " Remap Arrow Keys for Buffer and Tab Navigation {{{
 " ============================================================================
-" 
+"
 " remap arrow keys
 nnoremap <left> :bprev<CR>
 nnoremap <right> :bnext<CR>
@@ -608,7 +659,7 @@ nnoremap <down> :tabprev<CR>
 " ============================================================================
 " Ack and Ag settings ::  {{{
 " ============================================================================
-" 
+"
 
 if executable('ack')
 	set grepprg=ack\ --nogroup\ --column\ --smart-case\ --nocolor\ --follow\ $*
@@ -658,7 +709,7 @@ augroup END
 " │                                    |_|   |_|            |___/        │
 " │                                                                      │
 " └──────────────────────────────────────────────────────────────────────┘
-" 
+"
 
 
 " ============================================================================
@@ -733,7 +784,7 @@ endif
 " ============================================================================
 " Syntastic {{{
 " ============================================================================
-" 
+"
 let g:syntastic_error_symbol = '✗'
 let g:syntastic_style_error_symbol = '✠'
 let g:syntastic_warning_symbol = '∆'
@@ -747,7 +798,7 @@ let g:syntastic_ruby_checkers          = ['mri', 'rubocop', 'reek']
 " ============================================================================
 " VimProc {{{
 " ============================================================================
-" 
+"
 
 nnoremap <leader>pry :VimShellInteractive pry<cr>
 
@@ -758,7 +809,7 @@ nnoremap <leader>pry :VimShellInteractive pry<cr>
 " ============================================================================
 " Vimfiler {{{
 " ============================================================================
-" 
+"
 let g:vimfiler_as_default_explorer = 1
 nnoremap <leader>n :VimFilerExplorer<CR>
 let g:vimfiler_enable_auto_cd = 1
@@ -770,7 +821,7 @@ let g:vimfiler_enable_auto_cd = 1
 " ============================================================================
 " Ultisnips {{{
 " ============================================================================
-" 
+"
 
 " Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
 let g:UltiSnipsExpandTrigger="<tab>"
@@ -788,7 +839,7 @@ let g:UltiSnipsEditSplit="vertical"
 " ============================================================================
 " EasyAlign {{{
 " ============================================================================
-" 
+"
 
 " Start interactive EasyAlign in visual mode (e.g. vipga)
 xmap ga <Plug>(EasyAlign)
@@ -798,9 +849,37 @@ nmap ga <Plug>(EasyAlign)
 
 "}}}
 
+" ============================================================================
+" Easytags {{{
+" ============================================================================
+" 
+" Generate tags asynchronously
+" This option is in beta version yet.
+" But to otherwise easytags takes a lot of time and runs when we save the file.
+let g:easytags_async=1
+
+" Execute easytags after every 40 seconds, default is 4000 -> 4 seconds.
+let g:easytags_updatetime_min=40000 "Measure is in milli-seconds
+
+"}}}
 
 
 
+" ============================================================================
+" Seeing is Believing {{{
+" ============================================================================
+" 
 
+" ~/.vimrc
 
+nmap <buffer> <F4> <Plug>(xmpfilter-run)
+xmap <buffer> <F4> <Plug>(xmpfilter-run)
+imap <buffer> <F4> <Plug>(xmpfilter-run)
+nmap <buffer> <F3> <Plug>(xmpfilter-mark)
+xmap <buffer> <F3> <Plug>(xmpfilter-mark)
+imap <buffer> <F3> <Plug>(xmpfilter-mark)
 
+nmap <F7> :%s/\s\+# =>.*$//g<CR>
+xmap <F7> :s/\s\+# =>.*$//g<CR>
+
+"}}}
