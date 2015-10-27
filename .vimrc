@@ -211,10 +211,10 @@ Plug 'janko-m/vim-test'
 " Plug 'rstacruz/vim-hyperstyle'
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'AndrewRadev/switch.vim'
-Plug 't9md/vim-ruby-xmpfilter'
 Plug 'zhaocai/GoldenView.Vim'
 "Plug 'wesQ3/vim-windowswap'
 Plug 'rking/ag.vim'
+Plug 'tommcdo/vim-express'
 
 
 " Browsing
@@ -234,6 +234,9 @@ set dictionary-=/usr/share/dict/words dictionary+=/usr/share/dict/words
 
 " Make backspace behave normally.
 set backspace=indent,eol,start
+
+" don't syntax-highlight long lines
+set synmaxcol=1000
 
 
 " Always show the statusline
@@ -384,6 +387,7 @@ vnoremap > >gv
 :colorscheme solarized
 
 
+
 " ============================================================================
 " Some cool things : Gary Berndhart {{{
 " ============================================================================
@@ -442,6 +446,10 @@ set winminheight=5
 " A key-binding for switch between latest 2 files (normally it's <C-^>)
 " Gary Berndhart maps it with ,, which means <leader><leader> for him.
 nnoremap <leader>f <C-^>
+
+
+
+
 
 
 
@@ -897,6 +905,11 @@ xmap <F7> :s/\s\+# =>.*$\\|^#\s[>!\~]>\(\s.*\)\?$//g \| :'<,'>s#\($\n\s*\)\+\%$#
 " Case sensitivity is determined by 'ignorecase' and 'smartcase'.
 let g:sneak#use_ic_scs = 1
 
+" Use f as usual in vim and use s for sneak, but F is now used for Sneak_S
+" So I don't need to remember S for reverse Sneak, and S works as reverse sneak
+" as well.
+
+nmap F <Plug>Sneak_S
 "}}}
 
 " ============================================================================
@@ -918,6 +931,17 @@ let g:gtfo#terminals = { 'mac' : 'iterm' }
 " directory. Specifying 'r' as the argument will tell it to run from the project
 " rootdirectory. For now any other mapping will result to the default.
  let g:ag_working_path_mode='r'
+
+"}}}
+
+
+" ============================================================================
+" Ctags {{{
+" ============================================================================
+" 
+
+" Because to go to tag only g<C-]> is working and <M-]>:: [M = Command Key]
+nnoremap <D-]> g<C-]>
 
 "}}}
 

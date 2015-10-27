@@ -179,6 +179,8 @@ alias ...="cd ../.."
 alias ..="cd ../"
 alias cd..="cd .."
 
+alias psql="'/Applications/Postgres.app/Contents/Versions/9.4/bin'/psql -p5432"
+
 # Location Aliases
 alias desk="cd ~/Desktop"
 alias dlds="cd ~/Downloads"
@@ -228,3 +230,6 @@ fi
 
 
 fpath+=("/usr/local/share/zsh/site-functions")
+autoload -U promptinit && promptinit
+prompt pure
+
