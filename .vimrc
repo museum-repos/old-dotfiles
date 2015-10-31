@@ -137,7 +137,7 @@ Plug 'osyo-manga/vim-monster'
 "└────────────────────────────────────────────────────────────────┘
 Plug 'jaxbot/browserlink.vim'
 Plug 'jaxbot/semantic-highlight.vim'
-Plug 'jaxbot/github-issues.vim'
+"Plug 'jaxbot/github-issues.vim'
 
 
 "┌─────────────────────────────────────────┐
@@ -814,7 +814,9 @@ let g:syntastic_style_error_symbol = '✠'
 let g:syntastic_warning_symbol = '∆'
 let g:syntastic_style_warning_symbol = '≈'
 
-let g:syntastic_ruby_checkers          = ['mri', 'rubocop', 'reek']
+" For ruby > 2.0 we can user reek
+" let g:syntastic_ruby_checkers          = ['mri', 'rubocop', 'reek']
+let g:syntastic_ruby_checkers          = ['mri', 'rubocop']
 
 "}}}
 
@@ -958,6 +960,11 @@ nnoremap <D-]> g<C-]>
 "}}}
 
 
+" ============================================================================
+" Vim-Notes {{{
+" ============================================================================
+" 
 let g:notes_directories = ['~/Documents/XoloxNotes', '~/Dropbox/Xolox Notes']
 let g:github_access_token = "c8f99cfd19ac745b9f498911655771aaeffd7048"
 
+"}}}

@@ -180,6 +180,9 @@ alias ...="cd ../.."
 alias ..="cd ../"
 alias cd..="cd .."
 
+alias migrate="rake db:migrate db:test:prepare"
+alias remigrate="rake db:migrate && rake db:rollback && rake db:migrate && rake db:test:prepare"
+
 alias psql="'/Applications/Postgres.app/Contents/Versions/9.4/bin'/psql -p5432"
 
 # Location Aliases
