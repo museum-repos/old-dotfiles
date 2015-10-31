@@ -78,7 +78,8 @@ export UPDATE_ZSH_DAYS=60
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git rails ruby brew bundler common-aliases dirhistory gem git-extras httpie jira node npm nyan osx sublime sudo svn svn-fast-info wd )
+#plugins=(git rails ruby brew bundler common-aliases dirhistory gem git-extras httpie jira node npm nyan osx sublime sudo svn svn-fast-info wd )
+plugins=(git ruby rails bundler)
 
 
 #}}}
@@ -232,4 +233,14 @@ fi
 fpath+=("/usr/local/share/zsh/site-functions")
 autoload -U promptinit && promptinit
 prompt pure
+
+
+
+# ============================================================================
+# {{{ Default editor is Macvim now
+# ============================================================================
+
+export EDITOR="mvim -v"
+
+#}}}
 

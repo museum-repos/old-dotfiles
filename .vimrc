@@ -58,8 +58,6 @@ Plug 'tpope/vim-endwise'
 Plug 'junegunn/vim-easy-align',       { 'on': ['<Plug>(EasyAlign)', 'EasyAlign'] }
 Plug 'junegunn/rainbow_parentheses.vim'
 Plug 'junegunn/vim-peekaboo'
-Plug 'junegunn/fzf',        { 'do': 'yes \| ./install' }
-Plug 'junegunn/fzf.vim'
 Plug 'junegunn/goyo.vim'
 Plug 'junegunn/limelight.vim'
 Plug 'junegunn/vim-github-dashboard', { 'on': ['GHDashboard', 'GHActivity']      }
@@ -68,6 +66,8 @@ Plug 'junegunn/vim-oblique'
 Plug 'junegunn/vim-fnr'
 Plug 'junegunn/vim-journal'
 Plug 'junegunn/seoul256.vim'
+" Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+" Plug 'junegunn/fzf.vim'
 
 
 " ┌──────────────────────────────────────────────┐
@@ -137,6 +137,7 @@ Plug 'osyo-manga/vim-monster'
 "└────────────────────────────────────────────────────────────────┘
 Plug 'jaxbot/browserlink.vim'
 Plug 'jaxbot/semantic-highlight.vim'
+Plug 'jaxbot/github-issues.vim'
 
 
 "┌─────────────────────────────────────────┐
@@ -156,8 +157,6 @@ Plug 'jaxbot/semantic-highlight.vim'
 
 Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
 Plug 'thinca/vim-quickrun'
-Plug 'jaxbot/browserlink.vim'
-Plug 'jaxbot/semantic-highlight.vim'
 Plug 'mbbill/undotree',  { 'on': 'UndotreeToggle'   }
 Plug 'keith/investigate.vim'
 Plug 'pangloss/vim-javascript'
@@ -202,19 +201,20 @@ Plug 'wellle/targets.vim'
 Plug 'tmm1/ripper-tags'
 Plug 'nathanaelkane/vim-indent-guides'
 Plug 'jiangmiao/auto-pairs'
-" Plug 'marijnh/tern_for_vim'
 Plug 'jiangmiao/auto-pairs'
 Plug 'hail2u/vim-css3-syntax'
 Plug 'ap/vim-css-color'
 Plug 'itchyny/lightline.vim'
 Plug 'janko-m/vim-test'
-" Plug 'rstacruz/vim-hyperstyle'
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'AndrewRadev/switch.vim'
 Plug 'zhaocai/GoldenView.Vim'
-"Plug 'wesQ3/vim-windowswap'
 Plug 'rking/ag.vim'
 Plug 'tommcdo/vim-express'
+"Plug 'rstacruz/vim-hyperstyle'
+"Plug 'marijnh/tern_for_vim'
+"Plug 'prophittcorey/vim-flay'
+"Plug 'wesQ3/vim-windowswap'
 
 
 " Browsing
@@ -957,4 +957,7 @@ nnoremap <D-]> g<C-]>
 
 "}}}
 
+
+let g:notes_directories = ['~/Documents/XoloxNotes', '~/Dropbox/Xolox Notes']
+let g:github_access_token = "c8f99cfd19ac745b9f498911655771aaeffd7048"
 
